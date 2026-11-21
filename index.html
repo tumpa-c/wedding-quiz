@@ -25,7 +25,7 @@ button{font:inherit}.shell{width:min(100%,680px)}.card{background:rgba(255,255,2
 <p class="footer">Made with love • Best enjoyed with a little celebration</p>
 </section>
 <section id="quiz" class="hidden">
-<div class="progress" id="progress"><span></span><span></span><span></span><span></span></div>
+<div class="progress" id="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
 <div class="question-number" id="questionNumber">Question 1 of 4</div>
 <h2 class="question" id="questionText"></h2>
 <div class="options" id="options"></div>
@@ -47,38 +47,35 @@ button{font:inherit}.shell{width:min(100%,680px)}.card{background:rgba(255,255,2
 </main>
 <script>
 const questions = [
- {text:"What are you wearing to the wedding?", options:["Whatever the bride and groom want 💗","Something stylish and superb ✨","Whatever the bride or groom is wearing 🤍"]},
- {text:"What song would you like to dedicate to the bride and groom?", options:["Dilwale Dulhania Le Jayenge ❤️","Shava Shava, Mahiya Ve, Shava Shava 💃","A Thousand Years ✨"]},
- {text:"How excited are you for the wedding?", options:["Very excited! 💗","Not at all excited 😒","On cloud nine! ☁️💖"]},
- {text:"Do you approve of this wedding and its mixed cultures?", options:["I approve of the wedding and its mixed cultures ❤️","I don't at all like it 😒"]}
-];
+ {text:"What are you wearing to the wedding?", options:["Whatever the bride and groom want 💗","Something stylish and superb ✨","Whatever the bride or groom is wearing 🤍"], points:[2,1,0]},
+ {text:"What song would you like to dedicate to the bride and groom?", options:["Dilwale Dulhania Le Jayenge ❤️","Shava Shava, Mahiya Ve, Shava Shava 💃","A Thousand Years ✨"], points:[2,1,2]},
+ {text:"How excited are you for the wedding?", options:["Very excited! 💗","Not at all excited 😒","On cloud nine! ☁️💖"], points:[2,0,2]},
+ {text:"Do you approve of this wedding and its mixed cultures?", options:["I approve of the wedding and its mixed cultures ❤️","I don't at all like it 😒"], points:[3,-5]},
+ {text:"You meet the groom's parents. How will you greet them in Malayalam?", options:["Namaskaram 🙏","Shubho Noboborsho 🌼","Sat Sri Akal ✨"], points:[2,0,0]},
+ {text:"Someone asks you how to say “awesome” in Bangla. What do you say?", options:["Darun! 🤩","Dhonnobad! 🙏","Bhalo theko! 🌸"], points:[2,0,0]},
+ {text:"How would you wish the newlyweds in Malayalam?", options:["Vivaha ashamsakal! 💐","Nomoshkar! 🙏","Abar dekha hobe! 👋"], points:[2,0,0]},
+ {text:"The DJ plays your favourite wedding song. What's your move?", options:["Own the dance floor 💃","Cheer everyone on from the sidelines 👏","Head straight to the buffet 😋"], points:[2,1,0]},
+ {text:"What's your top priority at a big Indian wedding?", options:["The delicious food, obviously 🍛","Meeting everyone and making memories 💕","The music, dancing and full-on celebration 🎶"], points:[1,2,2]},
+ {text:"The photographer says, “One fun pose with the couple!” What do you do?", options:["Strike a dramatic Bollywood pose 📸","Make everyone laugh with a silly pose 😂","Politely hide behind the tallest guest 🙈"], points:[2,2,0]}
+]
 const answerFeedback = [
- [
-  "You respect the couple's wishes. Thoughtful, elegant and guest-list material!",
-  "We love your fashion confidence. Bring that style to the celebration!",
-  "Matching the bride or groom? A bold fashion statement — let's leave the spotlight to the happy couple!"
- ],
- [
-  "A Bollywood classic! Excellent taste and a lovely dedication.",
-  "You're bringing the Bollywood dance-floor energy. The DJ may need to prepare!",
-  "A romantic choice. We're already imagining the first dance."
- ],
- [
-  "We love your enthusiasm. That excitement is contagious!",
-  "Oh dear — we may need to warm you up before the celebrations begin!",
-  "You're absolutely over the moon. That's the energy we want!"
- ],
- [
-  "Your support for both cultures means everything. Thank you for celebrating love without borders.",
-  "The couple was hoping for a little more understanding and support for their cultures."
- ]
-];
+ ["You respect the couple's wishes. Thoughtful, elegant and guest-list material!","We love your fashion confidence. Bring that style to the celebration!","Matching the bride or groom? A bold fashion statement — let's leave the spotlight to the happy couple!"],
+ ["A Bollywood classic! Excellent taste and a lovely dedication.","You're bringing the Bollywood dance-floor energy. The DJ may need to prepare!","A romantic choice. We're already imagining the first dance."],
+ ["We love your enthusiasm. That excitement is contagious!","Oh dear — we may need to warm you up before the celebrations begin!","You're absolutely over the moon. That's the energy we want!"],
+ ["Your support for both cultures means everything. Thank you for celebrating love without borders.","The couple was hoping for a little more understanding and support for their cultures."],
+ ["“Namaskaram” is a respectful Malayalam greeting — a lovely way to greet the groom's parents.","That's a greeting from another language. A warm “Namaskaram” is a great Malayalam choice!","That's a greeting from another language. Try “Namaskaram” to greet them in Malayalam!"],
+ ["“Darun!” is a natural Bangla way to say “great” or “awesome”. Nailed it!","“Dhonnobad” means “thank you” in Bangla — useful, but not quite “awesome”!","“Bhalo theko” means “stay well” in Bangla. For “awesome”, try “Darun!”"],
+ ["“Vivaha ashamsakal” means wedding wishes/congratulations in Malayalam. Beautifully said!","“Nomoshkar” is a Bengali greeting, not a Malayalam wedding wish.","“Abar dekha hobe” means “see you again” in Bangla. Try “Vivaha ashamsakal” for wedding wishes!"],
+ ["Main-character energy! The dance floor is lucky to have you.","A supportive cheerleader is essential to every great celebration.","A very respectable wedding strategy — never underestimate the buffet!"],
+ ["A great feast is part of the magic. We approve of your priorities!","The best weddings are about the people and memories. Lovely answer!","Music and dancing make unforgettable memories. Let's celebrate!"],
+ ["A Bollywood pose deserves its own photo frame. Iconic!","Making everyone laugh is a gift. That photo will be treasured!","A little camera shyness is allowed — but don't miss your moment with the couple!"]
+]
 let current = 0;
-let answers = [null,null,null,null];
+let answers = Array(questions.length).fill(null);
 const $ = id => document.getElementById(id);
 function show(section){["welcome","quiz","result"].forEach(id=>$(id).classList.toggle("hidden",id!==section));}
 function renderQuestion(){
- const q=questions[current]; $("questionNumber").textContent=`Question ${current+1} of 4`;
+ const q=questions[current]; $("questionNumber").textContent=`Question ${current+1} of ${questions.length}`;
  $("questionText").textContent=q.text;
  [...$("progress").children].forEach((el,i)=>el.classList.toggle("done",i<=current));
  $("options").innerHTML="";
@@ -89,22 +86,22 @@ function renderQuestion(){
   b.addEventListener("click",()=>{answers[current]=i;renderQuestion();});$("options").appendChild(b);
  });
  $("backBtn").style.visibility=current===0?"hidden":"visible";
- $("nextBtn").textContent=current===3?"See my verdict":"Next";
+ $("nextBtn").textContent=current===questions.length-1?"See my verdict":"Next";
  $("nextBtn").disabled=answers[current]===null;
 }
 function getVerdict(){
  const [outfit,music,excitement,approval]=answers;
- const score=(outfit===0?2:outfit===1?1:0)+(music===0?2:music===1?1:0)+(excitement===1?-2:2)+(approval===0?3:-5);
+ const score=answers.reduce((total,answer,index)=>total+questions[index].points[answer],0);
  let title,message,invited,seal;
  if(approval===1){title="The Unimpressed Guest";message="Oh no, the bride and groom aren't impressed with your answers. They were hoping for a little more love and understanding.";invited=false;seal="♡";}
- else if(score>=8){title="The Dream Wedding Guest";message="You're everything the couple could wish for in a guest: thoughtful, supportive and full of joy. Your presence will make the celebration even more special.";invited=true;seal="✧";}
- else if(score>=6 && music===1){title="The Party Superstar";message="You're bringing the music, movement and unforgettable energy. Get those dancing shoes ready — the celebration needs you!";invited=true;seal="♪";}
- else if(score>=5){title="The Sweet Supporter";message="Your heart is in the right place. The couple appreciates your support and would love to celebrate this special day with you.";invited=true;seal="♡";}
+ else if(score>=18){title="The Dream Wedding Guest";message="You're everything the couple could wish for in a guest: thoughtful, supportive and full of joy. Your presence will make the celebration even more special.";invited=true;seal="✧";}
+ else if(score>=15 && (music===1 || answers[7]===0)){title="The Party Superstar";message="You're bringing the music, movement and unforgettable energy. Get those dancing shoes ready — the celebration needs you!";invited=true;seal="♪";}
+ else if(score>=12){title="The Sweet Supporter";message="Your heart is in the right place. The couple appreciates your support and would love to celebrate this special day with you.";invited=true;seal="♡";}
  else {title="The Wedding Work-in-Progress";message="You're not quite on the same page as the happy couple just yet. A little more enthusiasm and support might change things!";invited=false;seal="…";}
  return {score,title,message,invited,seal};
 }
 function finish(){
- const v=getVerdict();$("resultTitle").textContent=v.title;$("resultMessage").textContent=v.message;$("scoreLine").textContent=`Your wedding score: ${v.score} / 9`;$("seal").textContent=v.seal;
+ const v=getVerdict();$("resultTitle").textContent=v.title;$("resultMessage").textContent=v.message;$("scoreLine").textContent=`Your wedding score: ${v.score} / 21`;$("seal").textContent=v.seal;
  $("feedbackList").innerHTML="";
  questions.forEach((q,i)=>{const d=document.createElement("div");d.className="feedback";const strong=document.createElement("strong");strong.textContent=`Your answer ${i+1}`;const p=document.createElement("div");p.textContent=answerFeedback[i][answers[i]];d.append(strong,p);$("feedbackList").appendChild(d);});
  $("inviteLines").textContent="";
@@ -118,8 +115,8 @@ function finish(){
 }
 $("startBtn").addEventListener("click",()=>{current=0;show("quiz");renderQuestion();});
 $("backBtn").addEventListener("click",()=>{if(current>0){current--;renderQuestion();}});
-$("nextBtn").addEventListener("click",()=>{if(answers[current]===null)return;if(current<3){current++;renderQuestion();}else finish();});
-$("againBtn").addEventListener("click",()=>{current=0;answers=[null,null,null,null];show("welcome");});
+$("nextBtn").addEventListener("click",()=>{if(answers[current]===null)return;if(current<questions.length-1){current++;renderQuestion();}else finish();});
+$("againBtn").addEventListener("click",()=>{current=0;answers=Array(questions.length).fill(null);show("welcome");});
 /* Original soft ambient tones generated locally; no external audio files or copyrighted song. */
 let audioCtx=null,oscillators=[],musicOn=false,interval=null;
 function playChord(){
